@@ -1,0 +1,91 @@
+pipeline{
+
+    agent { label 'slave' }
+    environment{
+        // Available to all stages
+        NAME = "Bhuvan"
+        ID = 90
+    }
+    stages{
+        stage("Print default vars"){
+            steps{
+                sh 'printenv | sort'
+            }
+        }
+        
+         stage("Use Env vars"){
+            environment{
+                // Available to this particular stage only
+                NAME ="Chand"
+                ID = 30
+            }
+            steps{
+                // Here env is optional we can use ${BUILD_NUMBER} directly but it is best practice to use env.
+                echo "Build Number = ${env.BUILD_NUMBER}"
+                echo "Build Number(without env.) = ${BUILD_NUMBER}"
+                
+                // It overrides global username
+                echo "NAME = ${env.NAME}" // chand
+                // For shell we don`t use env. If we use we ill get error
+                sh 'echo ${NAME}' // chand
+                
+                // Even number will be treated as string, as you can see here
+                echo "ID = ${env.ID} and its type is ${env.ID.class}" //ID = 30 and its type is class java.lang.String
+                
+                script{
+                    env.GROUP_NAME = "test-group"
+                    env.TRIGGER_NEXT=true
+                    env.NAME = "dummy-name"
+                }
+                echo "Group name =${env.GROUP_NAME}" // test-group
+                sh 'echo group name is ${GROUP_NAME}' // test-group
+                // script block cannot overide name
+                echo "NAME is: ${env.NAME}" // chand
+                
+                withEnv(["USER_PWD=secret","USER_IS_ADMIN=false","NAME=Maddi"]){
+                echo "user password is: ${env.USER_PWD}" // secret
+                sh 'echo user is admin?: ${USER_IS_ADMIN}' // false
+                echo "Name is: ${env.NAME}" // Maddi
+                }
+            }
+        }
+        
+        stage("Using boolean env vars"){
+            when{
+                expression{
+                   // env.TRIGGER_NEXT == true --> This will result in error because env.TRIGGER_NEXT will be treated as a string
+                    env.TRIGGER_NEXT.toBoolean() == true
+                }
+            }
+            // other way is to use when {environmanet name: "TRIGGER_NEXT", value = "true" and set value in script block to string by double quoating "true"}
+            steps {
+                echo "Type of trigger next is: ${env.TRIGGER_NEXT.class}"
+                echo "Type of trigger next is: ${env.TRIGGER_NEXT.toBoolean().class}"
+            }
+            
+        }
+        stage("capturing output from other step"){
+            environment{
+                // By default sh doesn`t return anything so sh 'ls -la /tmp | tail -n +4 | wc -l' output will be null.
+                COUNT_FILES= sh(script: "ls -la /tmp | tail -n +4 | wc -l", returnStdout: true)
+            }
+            steps{
+                echo "No of files in /tmp folder are: ${env.COUNT_FILES}"
+            }
+        }
+        stage("Handling null values"){
+            environment{
+                // SOME_VAL = someVal() //It captures string(null value string with 4 characters) not null 
+                // This is elvis opetaror. Refere blog: https://blog.mrhaki.com/2009/08/groovy-goodness-elvis-operator.html  
+                SOME_VAL = "${someVal() ?: ''}"
+            }
+            steps{
+                echo "The value of someval is ${env.SOME_VAL} and its type is ${env.SOME_VAL?.class}"
+            }
+        }
+        
+    }
+}
+def someVal(){
+    return null
+}
