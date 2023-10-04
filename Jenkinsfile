@@ -5,7 +5,7 @@ pipeline {
             steps {
                 script {
                     // Load the external script file
-                     def myScript= load 'myScript.groovy'
+                     def myScript = load 'myScript.groovy'
                       myScript.greet()              
                 }
             }
