@@ -9,7 +9,10 @@ pipeline {
                     // Load the external script file
                     def externalScript = load 'myScript.groovy'
                     def folder_name=sh (script: 'ls -rd * | head -n 1',returnStdout: true).trim()
-                    echo "List of files:\n{folder_name}"
+                    def pwd=sh (script: 'pwd | head -n 1',returnStdout: true).trim()
+
+                    echo "List of files:\n ${folder_name}"
+                    echo "pwd: ${pwd}"
                     echo "Value of externalScript: ${externalScript}"
                     // Call a function defined in the external script
                     def greeting = externalScript.greet('John')
