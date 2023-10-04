@@ -8,10 +8,9 @@ pipeline {
                     load 'myScript.groovy'
 
                     // Call the injected function
-                    def greeting = greet('John')
+                    greet('John')
 
-                    // Output the greeting to the console
-                    echo greeting
+                   
                 }
             }
         }
