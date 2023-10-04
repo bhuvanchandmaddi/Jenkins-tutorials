@@ -1,6 +1,7 @@
 pipeline {
     agent any
-    environment{
+    environment {
+     APP_NAME: "dummy app from Jenkins global env block"
     }
     
     stages {
