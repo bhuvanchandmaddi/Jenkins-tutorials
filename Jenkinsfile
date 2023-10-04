@@ -11,7 +11,7 @@ pipeline {
 
                     // Call a function defined in the external script
                     def greeting = externalScript.greet('John')
-                    sh 'echo greeting' // Output: Hello, John!
+                    sh 'echo ${greeting}' // Output: Hello, John!
                     // call the variable
                    sh 'echo "Application name: ${APP_NAME}"'
                 }
