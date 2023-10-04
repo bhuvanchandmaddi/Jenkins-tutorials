@@ -7,7 +7,7 @@ pipeline {
                     // Load the external script file
                   //load 'myScript.groovy'
                     // Load the external script file
-                    def externalScript = load 'myScript.groovy'
+                    def externalScript = load '/home/jenkins/workspace/Env-vars-demo/myScript.groovy'
                     def folder_name=sh (script: 'ls -rd * | head -n 1',returnStdout: true).trim()
                     def pwd=sh (script: 'pwd | head -n 1',returnStdout: true).trim()
 
