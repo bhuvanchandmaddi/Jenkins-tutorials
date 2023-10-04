@@ -2,4 +2,4 @@ def greet() {
     return "Hello,"
 }
 // App vars
-//env.APP_NAME = 'dummy-app'
+env.APP_NAME = 'dummy-app'
