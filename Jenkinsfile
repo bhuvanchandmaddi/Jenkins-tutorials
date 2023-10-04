@@ -5,12 +5,8 @@ pipeline {
             steps {
                 script {
                     // Load the external script file
-                    load 'myScript.groovy'
-
-                    // Call the injected function
-                    greet()
-
-                   
+                     def myScript= load 'myScript.groovy'
+                      myScript.greet()              
                 }
             }
         }
