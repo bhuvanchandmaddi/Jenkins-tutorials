@@ -5,14 +5,14 @@ pipeline {
             steps {
                 script {
                     // Load the external script file
-                   // def externalScript = load 'myScript.groovy'
+                  load 'myScript.groovy'
 
                     // Call a function defined in the external script
                    // def greeting = externalScript.greet('John')
                     //echo greeting // Output: Hello, John!
 
                     // call the variable
-                   sh 'echo "Application name: ${env.APP_NAME}"'
+                   sh 'echo "Application name: ${APP_NAME}"'
                 }
             }
         }
