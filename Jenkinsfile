@@ -12,7 +12,7 @@ pipeline {
                     //echo greeting // Output: Hello, John!
 
                     // call the variable
-                   sh 'echo "Application name: ${APP_NAME}"'
+                   sh 'echo "Application name: ${env.APP_NAME}"'
                 }
             }
         }
