@@ -5,10 +5,10 @@ pipeline {
             steps {
                 script {
                     // Load the external script file
-                    def externalScript = load 'myScript.groovy'
+                    load 'myScript.groovy'
 
                     // Call the injected function
-                    def greeting = externalScript.greet('John')
+                    def greeting = greet('John')
 
                     // Output the greeting to the console
                     echo greeting
